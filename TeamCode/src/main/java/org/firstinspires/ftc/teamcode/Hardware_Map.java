@@ -60,6 +60,8 @@ public class Hardware_Map
     public Servo    rightClaw   = null;
     public Webcam   Webcam;
 
+    //hfgsadifeisisdgisdfiug
+
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
     public static final double ARM_DOWN_POWER  = -0.45 ;
@@ -89,6 +91,8 @@ public class Hardware_Map
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftArm.setPower(0);
+
+        //bhigfiwsaifbheilghisudhgi
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
