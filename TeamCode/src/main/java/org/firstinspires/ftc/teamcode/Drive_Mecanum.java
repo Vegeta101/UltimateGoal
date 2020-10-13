@@ -102,6 +102,12 @@ public class Drive_Mecanum extends LinearOpMode {
             robot.rightFront.setPower(V2 * speed_reduction);
             robot.leftBack.setPower(V3 * speed_reduction);
             robot.rightBack.setPower(V4 * speed_reduction);
+
+            telemetry.addData("V1", V1);
+            telemetry.addData("V2", V2);
+            telemetry.addData("V3", V3);
+            telemetry.addData("V4", V4);
+            telemetry.update();
             // PROGRAM ENDS HERE -------------------------------------------------------------------------------------
         }
     }
