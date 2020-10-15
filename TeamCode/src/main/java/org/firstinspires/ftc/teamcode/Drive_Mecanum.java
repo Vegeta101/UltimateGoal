@@ -98,10 +98,10 @@ public class Drive_Mecanum extends LinearOpMode {
                 speed_reduction = 1;
             }
 
-            robot.leftFront.setPower(V1 * speed_reduction);
-            robot.rightFront.setPower(V2 * speed_reduction);
-            robot.leftBack.setPower(V3 * speed_reduction);
-            robot.rightBack.setPower(V4 * speed_reduction);
+            robot.left_front.setPower(V1 * speed_reduction);
+            robot.right_front.setPower(V2 * speed_reduction);
+            robot.left_back.setPower(V3 * speed_reduction);
+            robot.right_back.setPower(V4 * speed_reduction);
 
             telemetry.addData("V1", V1);
             telemetry.addData("V2", V2);
