@@ -35,7 +35,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
  * It uses the common Pushbot hardware class to define the drive on the robot.
@@ -63,11 +62,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Blue_Block", group="Production")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Autonomous_Testing", group="Production")
 public class Autonomous_Testing extends LinearOpMode {
 
     /* Declare OpMode members. */
     Hardware_Map robot = new Hardware_Map();   // Use a Pushbot's hardware
+    Webcam_Object_Detection webcam = new Webcam_Object_Detection();
     private ElapsedTime runtime = new ElapsedTime();
 
     static final int COUNTS_PER_MOTOR_REV = 28;    // Motor with 1:1 gear ratio
@@ -84,6 +84,7 @@ public class Autonomous_Testing extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        webcam.init();
 
 
         // Send telemetry message to signify robot waiting;
@@ -96,6 +97,8 @@ public class Autonomous_Testing extends LinearOpMode {
                 robot.right_back.getCurrentPosition(),
                 robot.left_front.getCurrentPosition(),
                 robot.right_front.getCurrentPosition());
+
+        // Activates and detects the amount of disks present on the field
 
 
         // Wait for the game to start (driver presses PLAY)

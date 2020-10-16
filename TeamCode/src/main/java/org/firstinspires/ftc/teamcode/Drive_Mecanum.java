@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -83,6 +84,7 @@ public class Drive_Mecanum extends LinearOpMode {
             final double V3 = r * Math.sin(robotangle) + rightX;
             final double V4 = r * Math.cos(robotangle) - rightX;
 
+            /*
             if (gamepad1.a = true) {
                 speed_reduction = .25;
             }
@@ -97,7 +99,8 @@ public class Drive_Mecanum extends LinearOpMode {
             else if (gamepad1.y = true) {
                 speed_reduction = 1;
             }
-
+            
+             */
             robot.left_front.setPower(V1 * speed_reduction);
             robot.right_front.setPower(V2 * speed_reduction);
             robot.left_back.setPower(V3 * speed_reduction);
