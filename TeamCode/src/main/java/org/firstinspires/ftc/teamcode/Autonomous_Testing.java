@@ -66,7 +66,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Autonomous_Testing extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Hardware_Map robot = new Hardware_Map();   // Use a Pushbot's hardware
+    Hardware_Map robot = new Hardware_Map();
     Webcam_Object_Detection webcam = new Webcam_Object_Detection();
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -84,19 +84,21 @@ public class Autonomous_Testing extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-        webcam.init();
+        String ringdetect = "";
+        ringdetect = webcam.detect();
+        telemetry.addData("ring patter", ringdetect);
+        telemetry.addData("", "----------------------------");
 
-
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Init Hardware");    //
+        telemetry.addData(">", "Press Play to Start");
         telemetry.update();
 
+        // Send telemetry message to signify robot waiting;
+        //telemetry.addData("Status", "Init Hardware");
+        //telemetry.addData("Webcam View", webcam.webcamview);
+       // telemetry.update();
+
         // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Path0", "Starting at %7d :%7d",
-                robot.left_back.getCurrentPosition(),
-                robot.right_back.getCurrentPosition(),
-                robot.left_front.getCurrentPosition(),
-                robot.right_front.getCurrentPosition());
+//
 
         // Activates and detects the amount of disks present on the field
 
@@ -120,17 +122,10 @@ public class Autonomous_Testing extends LinearOpMode {
                     .addData("back", robot.right_back.getCurrentPosition());
 
             telemetry.update();
-
-
-            sleep(1000);
-
-
             robot.left_front.setPower(0);
             robot.right_front.setPower(0);
             robot.right_back.setPower(0);
             robot.left_back.setPower(0);
-
-
         }
 
     }
