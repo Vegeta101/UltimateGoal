@@ -19,7 +19,8 @@ public class Autonomous extends LinearOpMode {
         String ringpattern = "";
         robot.getDriveTrain().init();
         robot.getComputerVision().init();
-
+        sleep(500);
+        
         ElapsedTime timer = new ElapsedTime();
         int count = 0;
 

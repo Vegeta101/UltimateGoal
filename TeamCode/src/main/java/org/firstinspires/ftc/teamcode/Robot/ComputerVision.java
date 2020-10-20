@@ -60,6 +60,7 @@ public class ComputerVision {
         if (tfod != null) {
            tfod.activate();
         }
+        tfod.setZoom(2.5, 1.78);
     }
 
     public String detect() {
