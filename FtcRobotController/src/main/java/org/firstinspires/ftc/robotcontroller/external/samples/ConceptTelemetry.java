@@ -136,7 +136,7 @@ public class ConceptTelemetry extends LinearOpMode  {
 
             // As an illustration, show some loop timing information
             telemetry.addData("loop count", loopCount);
-            telemetry.addData("ms/loop", "%.3f ms", opmodeRunTime.milliseconds() / loopCount);
+            telemetry.addData("ms/loop","%.3f ms", opmodeRunTime.milliseconds() / loopCount);
 
             // Show joystick information as some other illustrative data
             telemetry.addLine("left joystick | ")

@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
-
+import com.qualcomm.hardware.logitech.LogitechGamepadF310;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -49,11 +49,37 @@ public class MecanumDriveTrain {
         left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    public void DriverControlled_Drive(double leftfront, double leftrear, double rightfront, double rightrear){
-        left_front.setPower(leftfront);
-        left_back.setPower(leftrear);
-        right_front.setPower(rightfront);
-        right_back.setPower(rightrear);
+    public void DriverControlled_Drive(){
+        double y = robot.opMode.gamepad1.left_stick_y;  // Control to Drive Forward / Back
+        double x = robot.opMode.gamepad1.left_stick_x;  // Strafe Control
+        double rot = robot.opMode.gamepad1.right_stick_x; // Rotation Control
+        y = y * -1;  // Pressing up on Controller is -1 in Y axis so multiply by -1 to make driving more intuitive.
 
+        // Init and Set all Power Variables to 0
+        double power_left_front = 0;
+        double power_left_back = 0;
+        double power_right_front = 0;
+        double power_right_back = 0;
+        // End Power Init
+
+        // Calculate Each Wheel Drive Power based on X, Y and Rot values from Control Pad.
+        power_left_front = y + x + rot;
+        power_left_back = y - x + rot;
+        power_right_front = y - x - rot;
+        power_right_back = y + x - rot;
+
+        // Set Power on Each Wheel Motor.
+        left_front.setPower(power_left_front);
+        left_back.setPower(power_left_back);
+        right_front.setPower(power_right_front);
+        right_back.setPower(power_right_back);
+
+        // Telemetry to Phone for Actual Power to Wheel Motors. Telemetry updated in Op Mode.
+        robot.opMode.telemetry.addLine("Front Wheel Power ")
+                .addData("Left","%.3f", power_left_front)
+                .addData("Right", "%.3f", power_right_front);
+        robot.opMode.telemetry.addLine(" Rear Wheel Power ")
+                .addData("Left", "%.3f", power_left_back)
+                .addData("Right","%.3f",  power_right_back);
     }
 }

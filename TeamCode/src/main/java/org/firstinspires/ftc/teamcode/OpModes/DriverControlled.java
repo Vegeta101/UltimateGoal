@@ -29,46 +29,18 @@ public class DriverControlled extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
+        // Initialize all the Robot Parts.
+        // First Init the Drive Train by setting up the DriveTrain Motors and Sensors.
         robot.getDriveTrain().init();
-
-
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Robot Initialized");    //
         telemetry.update();
-
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-
-        double speed_reduction    = 1;
-
         //PROGRAM STARTS HERE -----------------------------------------------------------------------------------------------
-
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x;
-            double rot = gamepad1.right_stick_x;
-
-            double power_left_front = 0;
-            double power_left_back = 0;
-            double power_right_front = 0;
-            double power_right_back = 0;
-
-            power_left_front = y + x + rot;
-            power_left_back = y - x + rot;
-            power_right_front = y - x - rot;
-            power_right_back = y + x - rot;
-            
-            robot.getDriveTrain().DriverControlled_Drive(power_left_front, power_left_back, power_right_front, power_right_back);
-
-            telemetry.addData("Left Front", power_left_front);
-            telemetry.addData("Right Front", power_right_front);
-            telemetry.addData("Left Rear", power_left_back);
-            telemetry.addData("Right Rear", power_right_back);
+            robot.getDriveTrain().DriverControlled_Drive();
             telemetry.update();
             // PROGRAM ENDS HERE -------------------------------------------------------------------------------------
         }
