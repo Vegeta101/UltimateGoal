@@ -51,7 +51,7 @@ public class ComputerVision {
         int tfodMonitorViewId = robot.opMode.hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", robot.opMode.hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.8f;
+        tfodParameters.minResultConfidence = 0.5f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
@@ -60,7 +60,7 @@ public class ComputerVision {
         if (tfod != null) {
            tfod.activate();
         }
-        tfod.setZoom(2.5, 1.78);
+       tfod.setZoom(2, 1.78);
     }
 
     public String detect() {

@@ -14,6 +14,12 @@ import org.firstinspires.ftc.teamcode.R;
 import java.util.List;
 
 public class MecanumDriveTrain {
+    static final int COUNTS_PER_MOTOR_REV = 28;    // Motor with 1:1 gear ratio
+    static final double DRIVE_GEAR_REDUCTION = 10.5;     // Rev Ultraplanetary Motor 12:1 but actual is 10.5:1
+    static final double WHEEL_DIAMETER_INCHES = 3.0;     // For figuring circumference
+    static final double COUNTS_PER_INCH_DOUBLE = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+
     DcMotorEx       left_front;
     DcMotorEx       left_back;
     DcMotorEx       right_front;
@@ -44,10 +50,15 @@ public class MecanumDriveTrain {
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        left_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void DriverControlled_Drive(){
         double y = robot.opMode.gamepad1.left_stick_y;  // Control to Drive Forward / Back
@@ -81,5 +92,35 @@ public class MecanumDriveTrain {
         robot.opMode.telemetry.addLine(" Rear Wheel Power ")
                 .addData("Left", "%.3f", power_left_back)
                 .addData("Right","%.3f",  power_right_back);
+    }
+
+    public void AutonomousDrive(double leftFront, double leftBack,
+                                double rightFront, double rightBack,
+                                double motor_power){
+        int new_left_front;
+        int new_left_back;
+        int new_right_front;
+        int new_right_back;
+
+        // Determine new target position, and pass to motor controller
+        new_left_front = left_front.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * leftFront);
+        new_left_back = left_back.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * leftBack);
+        new_right_front = right_front.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * rightFront);
+        new_right_back = right_back.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * rightBack);
+        left_front.setTargetPosition(new_left_front);
+        left_back.setTargetPosition(new_left_back);
+        right_front.setTargetPosition(new_right_front);
+        right_back.setTargetPosition(new_right_back);
+
+        left_back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right_back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        left_front.setPower(Math.abs(motor_power));
+        left_back.setPower(Math.abs(motor_power));
+        right_front.setPower(Math.abs(motor_power));
+        right_back.setPower(Math.abs(motor_power));
+
     }
 }
