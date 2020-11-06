@@ -138,7 +138,7 @@ public class MecanumDriveTrain {
         left_back.setPower(motor_power);
         right_front.setPower(motor_power);
         right_back.setPower(motor_power);
-        if targetColor == "blue"{
+        if (targetColor == "blue"){
             while (colorSensor.blue() < 1700){
 
             }
@@ -148,6 +148,6 @@ public class MecanumDriveTrain {
         left_front.setPower(0);
         left_back.setPower(0);
         right_front.setPower(0);
-        right_back.setPower(0;
+        right_back.setPower(0);
     }
 }
