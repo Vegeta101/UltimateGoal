@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robot;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -24,6 +25,7 @@ public class MecanumDriveTrain {
     DcMotorEx       left_back;
     DcMotorEx       right_front;
     DcMotorEx       right_back;
+    ColorSensor colorSensor;
 
     Robot           robot;
 
@@ -122,5 +124,30 @@ public class MecanumDriveTrain {
         right_front.setPower(Math.abs(motor_power));
         right_back.setPower(Math.abs(motor_power));
 
+        while (right_back.isBusy() && right_front.isBusy() && left_front.isBusy() && left_back.isBusy()){
+
+        }
+
+    }
+    public void moveToColor(String targetColor, double motor_power){
+        left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        left_front.setPower(motor_power);
+        left_back.setPower(motor_power);
+        right_front.setPower(motor_power);
+        right_back.setPower(motor_power);
+        if targetColor == "blue"{
+            while (colorSensor.blue() < 1700){
+
+            }
+
+        }
+        //try to figure out how to motor brake
+        left_front.setPower(0);
+        left_back.setPower(0);
+        right_front.setPower(0);
+        right_back.setPower(0;
     }
 }
