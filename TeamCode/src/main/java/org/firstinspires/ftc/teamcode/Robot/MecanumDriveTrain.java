@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.Robot;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.hardware.logitech.LogitechGamepadF310;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -25,7 +28,10 @@ public class MecanumDriveTrain {
     DcMotorEx       left_back;
     DcMotorEx       right_front;
     DcMotorEx       right_back;
-    ColorSensor colorSensor;
+    ColorSensor     colorSensor;
+    float hsvValues[] = {0F, 0F, 0F};
+    final float values[] = hsvValues;
+    final int SCALE_FACTOR = 255;
 
     Robot           robot;
 
@@ -42,13 +48,12 @@ public class MecanumDriveTrain {
         right_front.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         left_back.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         right_back.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-
+        colorSensor = (ColorSensor) robot.opMode.hardwareMap.get(HardwareDevice.class, "sensor_color");
         // Set all motors to zero power
         left_front.setPower(0);
         right_front.setPower(0);
         left_back.setPower(0);
         right_back.setPower(0);
-
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -130,20 +135,37 @@ public class MecanumDriveTrain {
 
     }
     public void moveToColor(String targetColor, double motor_power){
+        Color.RGBToHSV(colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+
         left_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right_back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Color.RGBToHSV(colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
         left_front.setPower(motor_power);
         left_back.setPower(motor_power);
         right_front.setPower(motor_power);
         right_back.setPower(motor_power);
+
+
+
         if (targetColor == "blue"){
-            while (colorSensor.blue() < 1700){
-
+            while (colorSensor.blue() > 3000) {
+                Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
             }
-
         }
+        else if (targetColor == "red"){
+            while (colorSensor.red() > 2200) {
+                Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+            }
+        }
+        else if (targetColor == "white"){
+            while (colorSensor.alpha() > 6000) {
+                Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+            }
+        }
+
+
         //try to figure out how to motor brake
         left_front.setPower(0);
         left_back.setPower(0);
