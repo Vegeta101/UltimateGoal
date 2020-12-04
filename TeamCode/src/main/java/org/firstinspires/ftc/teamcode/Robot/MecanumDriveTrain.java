@@ -150,18 +150,30 @@ public class MecanumDriveTrain {
 
 
         if (targetColor == "blue"){
-            while (colorSensor.blue() < 2500 && colorSensor.red() > 1000) {
+            while (colorSensor.blue() < 1000 && colorSensor.red() > 500 && colorSensor.green() < 80s0) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+                robot.opMode.telemetry.addData("Red", colorSensor.red());
+                robot.opMode.telemetry.addData("Blue", colorSensor.blue());
+                robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.update();
             }
         }
         else if (targetColor == "red"){
-            while (colorSensor.red() < 3000 && colorSensor.red() > 4000) {
+            while (colorSensor.red() < 2000 && colorSensor.red() > 3000 && colorSensor.green() < 750) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+                robot.opMode.telemetry.addData("Red", colorSensor.red());
+                robot.opMode.telemetry.addData("Blue", colorSensor.blue());
+                robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.update();
             }
         }
         else if (targetColor == "white"){
-            while (colorSensor.red() < 5000 && colorSensor.blue() < 4500 && colorSensor.green() < 6000) {
+            while (colorSensor.red() < 3200 && colorSensor.blue() < 2500 && colorSensor.green() < 3200) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
+                robot.opMode.telemetry.addData("Red", colorSensor.red());
+                robot.opMode.telemetry.addData("Blue", colorSensor.blue());
+                robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.update();
             }
         }
 

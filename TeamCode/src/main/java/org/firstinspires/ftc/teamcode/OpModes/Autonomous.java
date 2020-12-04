@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import android.graphics.Color;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.teamcode.Robot.Robot;
 
@@ -11,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Robot.Robot;
 public class Autonomous extends LinearOpMode {
     Robot robot = new Robot (this);
     int Target_Zone;
+    ColorSensor colorSensor;
 
     private boolean inInitializationState() {
         return (!opModeIsActive() && !isStopRequested());
@@ -62,7 +65,8 @@ public class Autonomous extends LinearOpMode {
                 }
 
             }
-            robot.getDriveTrain().moveToColor("red", .2);
+            robot.getDriveTrain().moveToColor("blue", .2);
+
         }
 
     }
