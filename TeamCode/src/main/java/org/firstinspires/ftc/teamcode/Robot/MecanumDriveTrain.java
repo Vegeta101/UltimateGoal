@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.hardware.logitech.LogitechGamepadF310;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -28,6 +30,8 @@ public class MecanumDriveTrain {
     DcMotorEx       left_back;
     DcMotorEx       right_front;
     DcMotorEx       right_back;
+    DcMotorEx       arm_motor;
+    Servo           arm_servo;
     ColorSensor     colorSensor;
     float hsvValues[] = {0F, 0F, 0F};
     final float values[] = hsvValues;
@@ -150,29 +154,32 @@ public class MecanumDriveTrain {
 
 
         if (targetColor == "blue"){
-            while (colorSensor.blue() < 1000 && colorSensor.red() > 500 && colorSensor.green() < 80s0) {
+            while (colorSensor.blue() < 250 && colorSensor.red() > 170 && colorSensor.green() < 180 && colorSensor.alpha() < 550) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
                 robot.opMode.telemetry.addData("Red", colorSensor.red());
                 robot.opMode.telemetry.addData("Blue", colorSensor.blue());
                 robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.addData("Clear", colorSensor.alpha());
                 robot.opMode.telemetry.update();
             }
         }
         else if (targetColor == "red"){
-            while (colorSensor.red() < 2000 && colorSensor.red() > 3000 && colorSensor.green() < 750) {
+            while (colorSensor.red() < 400 && colorSensor.blue() > 200 && colorSensor.green() < 110 && colorSensor.alpha() < 600) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
                 robot.opMode.telemetry.addData("Red", colorSensor.red());
                 robot.opMode.telemetry.addData("Blue", colorSensor.blue());
                 robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.addData("Clear", colorSensor.alpha());
                 robot.opMode.telemetry.update();
             }
         }
         else if (targetColor == "white"){
-            while (colorSensor.red() < 3200 && colorSensor.blue() < 2500 && colorSensor.green() < 3200) {
+            while (colorSensor.red() < 700 && colorSensor.blue() < 600 && colorSensor.green() < 750 && colorSensor.alpha() < 2000) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
                 robot.opMode.telemetry.addData("Red", colorSensor.red());
                 robot.opMode.telemetry.addData("Blue", colorSensor.blue());
                 robot.opMode.telemetry.addData("Green", colorSensor.green());
+                robot.opMode.telemetry.addData("Clear", colorSensor.alpha());
                 robot.opMode.telemetry.update();
             }
         }
@@ -183,5 +190,10 @@ public class MecanumDriveTrain {
         left_back.setPower(0);
         right_front.setPower(0);
         right_back.setPower(0);
+    }
+    public void wobbleGrip(int motor_position, double motor_power, double servo) {
+        arm_motor.setTargetPosition(motor_position);
+        arm_motor.setPower(motor_power);
+        arm_servo.setPosition(servo);
     }
 }

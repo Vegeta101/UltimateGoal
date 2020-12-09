@@ -65,7 +65,8 @@ public class Autonomous extends LinearOpMode {
                 }
 
             }
-            robot.getDriveTrain().moveToColor("blue", .2);
+            robot.getDriveTrain().moveToColor("red", .2);
+            //robot.getDriveTrain().wobbleGrip(1, .25, 0);
 
         }
 
