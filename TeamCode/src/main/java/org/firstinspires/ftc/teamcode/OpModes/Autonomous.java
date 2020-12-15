@@ -53,7 +53,7 @@ public class Autonomous extends LinearOpMode {
 
                 telemetry.addData(">", "Press Play to Start");
                 telemetry.update();
-                sleep(2500);
+                sleep(1800);
                 if (Target_Zone == 0) {
                     break;
                 }
@@ -65,8 +65,13 @@ public class Autonomous extends LinearOpMode {
                 }
 
             }
-            robot.getDriveTrain().moveToColor("red", .2);
-            //robot.getDriveTrain().wobbleGrip(1, .25, 0);
+            if (Target_Zone == 0) {
+                robot.getDriveTrain().moveToColor("red", .2);
+                robot.getDriveTrain().wobbleGrip(0,0, 0);
+                robot.getDriveTrain().AutonomousDrive(25, -25, -25, 25, .5);
+                //Insert code for firing device
+            }
+
 
         }
 

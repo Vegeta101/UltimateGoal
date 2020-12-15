@@ -11,10 +11,23 @@ import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.hardware.logitech.LogitechGamepadF310;
 import com.qualcomm.robotcore.hardware.Servo;
 
+//------------------------------------------------------------------------------
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+//------------------------------------------------------------------------------
+
 import org.firstinspires.ftc.teamcode.R;
 
 import java.util.List;
@@ -26,6 +39,7 @@ public class MecanumDriveTrain {
     static final double COUNTS_PER_INCH_DOUBLE = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
+    Orientation     angles;
     DcMotorEx       left_front;
     DcMotorEx       left_back;
     DcMotorEx       right_front;
@@ -64,7 +78,7 @@ public class MecanumDriveTrain {
         left_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         left_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_back.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         left_front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         left_back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -118,22 +132,23 @@ public class MecanumDriveTrain {
         new_left_back = left_back.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * leftBack);
         new_right_front = right_front.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * rightFront);
         new_right_back = right_back.getCurrentPosition() + (int) (COUNTS_PER_INCH_DOUBLE * rightBack);
-        left_front.setTargetPosition(new_left_front);
+        right_back.setTargetPosition(new_left_front);
         left_back.setTargetPosition(new_left_back);
         right_front.setTargetPosition(new_right_front);
-        right_back.setTargetPosition(new_right_back);
+        left_front.setTargetPosition(new_right_back);
 
         left_back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right_back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right_front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        left_front.setPower(Math.abs(motor_power));
         left_back.setPower(Math.abs(motor_power));
-        right_front.setPower(Math.abs(motor_power));
         right_back.setPower(Math.abs(motor_power));
+        left_front.setPower(Math.abs(motor_power));
+        right_front.setPower(Math.abs(motor_power));
 
-        while (right_back.isBusy() && right_front.isBusy() && left_front.isBusy() && left_back.isBusy()){
+
+        while (right_back.isBusy() && left_back.isBusy() && left_front.isBusy() && right_front.isBusy()){
 
         }
 
@@ -146,15 +161,15 @@ public class MecanumDriveTrain {
         left_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         right_front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Color.RGBToHSV(colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
-        left_front.setPower(motor_power);
+        right_back.setPower(motor_power);
         left_back.setPower(motor_power);
         right_front.setPower(motor_power);
-        right_back.setPower(motor_power);
+        left_front.setPower(motor_power);
 
 
 
         if (targetColor == "blue"){
-            while (colorSensor.blue() < 250 && colorSensor.red() > 170 && colorSensor.green() < 180 && colorSensor.alpha() < 550) {
+            while (colorSensor.blue() < 250 && (colorSensor.red() > 150) && (colorSensor.alpha() < 600)) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
                 robot.opMode.telemetry.addData("Red", colorSensor.red());
                 robot.opMode.telemetry.addData("Blue", colorSensor.blue());
@@ -164,7 +179,7 @@ public class MecanumDriveTrain {
             }
         }
         else if (targetColor == "red"){
-            while (colorSensor.red() < 400 && colorSensor.blue() > 200 && colorSensor.green() < 110 && colorSensor.alpha() < 600) {
+            while (colorSensor.red() < 400 && colorSensor.alpha() < 600) {
                 Color.RGBToHSV( colorSensor.red() * SCALE_FACTOR, colorSensor.green() * SCALE_FACTOR, colorSensor.blue() * SCALE_FACTOR, hsvValues);
                 robot.opMode.telemetry.addData("Red", colorSensor.red());
                 robot.opMode.telemetry.addData("Blue", colorSensor.blue());
@@ -195,5 +210,8 @@ public class MecanumDriveTrain {
         arm_motor.setTargetPosition(motor_position);
         arm_motor.setPower(motor_power);
         arm_servo.setPosition(servo);
+    }
+    public void IMU_drive() {
+        angles   = robot.imu_hub1.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
     }
 }
