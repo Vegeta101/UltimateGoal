@@ -65,12 +65,7 @@ public class Autonomous extends LinearOpMode {
                 }
 
             }
-            if (Target_Zone == 0) {
-                robot.getDriveTrain().moveToColor("red", .2);
-                robot.getDriveTrain().wobbleGrip(0,0, 0);
-                robot.getDriveTrain().AutonomousDrive(25, -25, -25, 25, .5);
-                //Insert code for firing device
-            }
+            robot.getDriveTrain().gyroDrive(20, 20, 20, 20, .25, 5);
 
 
         }
