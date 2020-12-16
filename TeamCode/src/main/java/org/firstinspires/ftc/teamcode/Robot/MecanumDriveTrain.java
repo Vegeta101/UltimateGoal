@@ -41,8 +41,7 @@ public class MecanumDriveTrain {
     private static final double HEADING_THRESHOLD   = 1;
     static final double     P_TURN_COEFF            = 0.1;
     static final double     P_DRIVE_COEFF           = 0.15;
-
-    Orientation     angles;
+    
     DcMotorEx       left_front;
     DcMotorEx       left_back;
     DcMotorEx       right_front;

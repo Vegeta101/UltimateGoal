@@ -32,7 +32,7 @@ public class Autonomous extends LinearOpMode {
 
         }
         if (opModeIsActive()) {
-            robot.getDriveTrain().AutonomousDrive(10, 10, 10, 10, .5);
+            //robot.getDriveTrain().AutonomousDrive(10, 10, 10, 10, .5);
             while (opModeIsActive()) {
                 ringpattern = robot.getComputerVision().detect();
                 sleep(500);
