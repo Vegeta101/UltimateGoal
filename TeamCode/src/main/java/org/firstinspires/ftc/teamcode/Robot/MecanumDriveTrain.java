@@ -120,6 +120,11 @@ public class MecanumDriveTrain {
         robot.opMode.telemetry.addLine(" Rear Wheel Power ")
                 .addData("Left", "%.3f", power_left_back)
                 .addData("Right","%.3f",  power_right_back);
+
+        // Code for the arm and dics launching mechanisms
+        if (robot.opMode.gamepad1.right_trigger == 1) {
+
+        }
     }
 
     public void AutonomousDrive(double leftFront, double leftBack,
